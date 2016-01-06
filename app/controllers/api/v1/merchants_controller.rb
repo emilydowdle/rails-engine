@@ -22,28 +22,18 @@ class Api::V1::MerchantsController < ApplicationController
   end
 
   def invoices
-    respond_with Merchant.find(params[:id]).items
+    respond_with Merchant.find(params[:id]).invoices
   end
 
   def items
-    respond_with Merchant.find(params[:id]).invoices
+    respond_with Merchant.find(params[:id]).items
   end
 
   def most_revenue
     # for all merchants
     # GET /api/v1/merchants/most_revenue?quantity=x returns the top x merchants ranked by total revenue
-    successful_transactions = Transaction.where(result: "success")
-    result = successful_transactions.map do |transaction|
-      transaction.invoice.merchant
-    end
-    # result = ""
-    respond_with result
-
-    Company.includes(:persons).where(:persons => { active: true } ).all
-
-@companies.each do |company|
-     company.person.name
-end
+    respond_with MerchantDataParser.new.sort_merchants_by_sales
+    # (params[:x])
   end
 
   def most_items
@@ -51,9 +41,25 @@ end
     # GET /api/v1/merchants/revenue?date=x returns the total revenue for date x across all merchants
   end
 
-  def revenue
+  def revenue_all
     # for all merchants
     # GET /api/v1/merchants/most_items?quantity=x returns the top x merchants ranked by total number of items sold
+  end
+
+  def revenue
+    # for one merchant
+    # GET /api/v1/merchants/:id/revenue returns the total revenue for that merchant across all transactions
+    # GET /api/v1/merchants/:id/revenue?date=x returns the total revenue for that merchant for a specific invoice date x
+    respond_with Merchant.find(params[:id]).total_revenue(params[:date])
+  end
+
+  def favorite_customer
+    respond_with Merchant.find(params[:id]).favorite_customer
+  end
+
+  def customers_with_pending_invoices
+    # for one merchant
+    # GET /api/v1/merchants/:id/customers_with_pending_invoices returns a collection of customers which have pending (unpaid) invoices
   end
 
   private

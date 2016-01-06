@@ -29,9 +29,15 @@ task :import, [:invoices_csv] => :environment do
 end
 
 desc "Imports a Transaction CSV file into an ActiveRecord table"
-task :import, [:transactions_csv] => :environment do
+task :import => :environment do
   CSV.foreach('lib/assets/transactions.csv', :headers => true) do |row|
-    Transaction.create!(row.to_hash)
+    Transaction.create!(
+                        invoice_id: row.field("invoice_id"),
+                        credit_card_number: row.field("credit_card_number"),
+                        result: row.field("result"),
+                        created_at: row.field("created_at"),
+                        updated_at: row.field("updated_at")
+                        )
   end
 end
 

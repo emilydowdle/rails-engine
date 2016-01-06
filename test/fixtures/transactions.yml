@@ -2,10 +2,8 @@
 
 one:
   credit_card_number: 1
-  credit_card_expiration_date: 2016-01-04 14:00:21
   result: MyString
 
 two:
   credit_card_number: 1
-  credit_card_expiration_date: 2016-01-04 14:00:21
   result: MyString
