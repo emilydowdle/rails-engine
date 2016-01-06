@@ -6,7 +6,7 @@ class Api::V1::MerchantsController < ApplicationController
   end
 
   def show
-    respond_with Merchant.find(params[:id])
+    respond_with find_merchant
   end
 
   def find
@@ -22,39 +22,36 @@ class Api::V1::MerchantsController < ApplicationController
   end
 
   def invoices
-    respond_with Merchant.find(params[:id]).invoices
+    respond_with find_merchant.invoices
   end
 
   def items
-    respond_with Merchant.find(params[:id]).items
+    respond_with find_merchant.items
   end
 
-  def most_revenue
-    # for all merchants
-    # GET /api/v1/merchants/most_revenue?quantity=x returns the top x merchants ranked by total revenue
-    respond_with MerchantDataParser.new.sort_merchants_by_sales
-    # (params[:x])
-  end
+  # def most_revenue
+  #   # for all merchants
+  #   # GET /api/v1/merchants/most_revenue?quantity=x returns the top x merchants ranked by total revenue
+  #   respond_with Merchant.most_revenue
+  # end
 
-  def most_items
+  def revenue_by_date
+    respond_with Merchant.revenue_by_date(params)
     # for all merchants
     # GET /api/v1/merchants/revenue?date=x returns the total revenue for date x across all merchants
   end
 
-  def revenue_all
-    # for all merchants
-    # GET /api/v1/merchants/most_items?quantity=x returns the top x merchants ranked by total number of items sold
-  end
+  # def revenue_all
+  #   # for all merchants
+  #   # GET /api/v1/merchants/most_items?quantity=x returns the top x merchants ranked by total number of items sold
+  # end
 
   def revenue
-    # for one merchant
-    # GET /api/v1/merchants/:id/revenue returns the total revenue for that merchant across all transactions
-    # GET /api/v1/merchants/:id/revenue?date=x returns the total revenue for that merchant for a specific invoice date x
-    respond_with Merchant.find(params[:id]).total_revenue(params[:date])
+    respond_with find_merchant.single_merchant_revenue(params)
   end
 
   def favorite_customer
-    respond_with Merchant.find(params[:id]).favorite_customer
+    respond_with find_merchant.favorite_customer
   end
 
   def customers_with_pending_invoices
@@ -63,6 +60,10 @@ class Api::V1::MerchantsController < ApplicationController
   end
 
   private
+
+    def find_merchant
+      Merchant.find(params[:id])
+    end
 
     def merchant_params
       params.permit(:id,

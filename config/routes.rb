@@ -8,8 +8,7 @@ Rails.application.routes.draw do
       get 'merchants/:id/invoices', to: 'merchants#invoices', defaults: { format: :json }
       get 'merchants/:id/items', to: 'merchants#items', defaults: { format: :json }
       get 'merchants/most_revenue', to: 'merchants#most_revenue', defaults: { format: :json }
-      get 'merchants/most_items', to: 'merchants#most_items', defaults: { format: :json }
-      get 'merchants/revenue', to: 'merchants#revenue_all', defaults: { format: :json }
+      get 'merchants/revenue', to: 'merchants#revenue_by_date', defaults: { format: :json }
       get 'merchants/:id/revenue', to: 'merchants#revenue', defaults: { format: :json }
       get 'merchants/:id/favorite_customer', to: 'merchants#favorite_customer', defaults: { format: :json }
       get 'merchants/:id/customers_with_pending_invoices', to: 'merchants#customers_with_pending_invoices', defaults: { format: :json }
@@ -46,6 +45,7 @@ Rails.application.routes.draw do
       get 'items/random', to: 'items#random', defaults: { format: :json }
       get 'items/:id/invoice_items', to: 'items#invoice_items', defaults: { format: :json }
       get 'items/:id/merchant', to: 'items#merchant', defaults: { format: :json }
+      get 'items/:id/best_day', to: 'items#best_day', defaults: { format: :json }
       resources :items, only: [:index, :show], defaults: { format: :json }
 
       get 'transactions/find', to: 'transactions#find', defaults: { format: :json }

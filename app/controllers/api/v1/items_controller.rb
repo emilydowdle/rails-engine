@@ -29,6 +29,10 @@ class Api::V1::ItemsController < ApplicationController
     respond_with Item.find(params[:id]).merchant
   end
 
+  def best_day
+    respond_with Item.find(params[:id]).best_day
+  end
+
   private
 
     def item_params

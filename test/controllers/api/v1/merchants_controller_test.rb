@@ -49,7 +49,6 @@ class Api::V1::MerchantsControllerTest < ActionController::TestCase
   end
 
   test "#find returns an merchant items when searched by id" do
-    skip
     merchant_id = Merchant.first.id
     get :find, id: merchant_id, format: :json
 
@@ -58,31 +57,29 @@ class Api::V1::MerchantsControllerTest < ActionController::TestCase
     assert_equal merchant_id, json_response["id"]
 
     assert_equal Merchant.first.updated_at, json_response["updated_at"]
-    assert_equal Merchant.first.status, json_response["status"]
+    assert_equal Merchant.first.name, json_response["name"]
   end
 
   test "#find returns an merchant items when searched by name" do
-    skip
-    merchant_status = Merchant.first.status
-    get :find, name: merchant_status, format: :json
+    merchant_name = Merchant.first.name
+    get :find, name: merchant_name, format: :json
 
     assert_response :success
     assert_kind_of Hash, json_response
-    assert_equal merchant_status, json_response["status"]
+    assert_equal merchant_name, json_response["name"]
 
     assert_equal Merchant.first.updated_at, json_response["updated_at"]
     assert_equal Merchant.first.created_at, json_response["created_at"]
   end
 
   test "#find all returns an collection of merchant items when searched by quantity" do
-    skip
-    merchant = Merchant.first.status
+    merchant = Merchant.first.name
     get :find_all, name: merchant, format: :json
 
     assert_response :success
     assert_equal 2, json_response.count
     assert_kind_of Array, json_response
-    assert_equal merchant, json_response.first["status"]
+    assert_equal merchant, json_response.first["name"]
     assert_equal Merchant.first.created_at, json_response.first["created_at"]
   end
 
