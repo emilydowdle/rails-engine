@@ -38,7 +38,7 @@ class Merchant < ActiveRecord::Base
   end
 
   def self.merchants_sorted_by_revenue
-    all.sort{|a, b| a.revenue_for_merchants <=> b.revenue_for_merchants}
+    all.sort {|a, b| a.revenue_for_merchants <=> b.revenue_for_merchants}
   end
 
   def favorite_customer
@@ -56,7 +56,8 @@ class Merchant < ActiveRecord::Base
   end
 
   def pending_invoices
-    customer_ids = self.invoices.joins(:transactions, :customer).where(transactions: { result:"failed" }).pluck(:customer_id).uniq
+    customer_ids = self.invoices.joins(:transactions, :customer).
+    where(transactions: { result:"failed" }).pluck(:customer_id).uniq
     Customer.where(id: customer_ids)
   end
 end
