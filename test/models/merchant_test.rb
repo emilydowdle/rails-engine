@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class MerchantTest < ActiveSupport::TestCase
+class MerchantTest < ActiveSupport::TestCase  
   test "merchant has many invoices" do
     create_merchant_customer_invoice
 
