@@ -2,6 +2,10 @@ class Merchant < ActiveRecord::Base
   has_many :items
   has_many :invoices
 
+  def self.random
+    order("RANDOM()").limit(1)
+  end
+
   def transactions
     invoices.order('invoices.id').joins(:transactions,:invoice_items)
   end
@@ -27,6 +31,16 @@ class Merchant < ActiveRecord::Base
     { "revenue" => total }
   end
 
+  def revenue_for_merchants
+    total = self.invoices.successful
+    .joins(:invoice_items)
+    .sum("invoice_items.quantity * invoice_items.unit_price").to_s
+  end
+
+  def self.merchants_sorted_by_revenue
+    all.sort{|a, b| a.revenue_for_merchants <=> b.revenue_for_merchants}
+  end
+
   def favorite_customer
     customer_purchases_hsh = self.invoices.where(status: "shipped")
     .group(:customer_id).count
@@ -39,5 +53,10 @@ class Merchant < ActiveRecord::Base
     .where("transactions.result = ? AND invoices.created_at = ?", "success", params[:date])
     .sum("invoice_items.quantity * invoice_items.unit_price")
     { "total_revenue" => total }
+  end
+
+  def pending_invoices
+    customer_ids = self.invoices.joins(:transactions, :customer).where(transactions: { result:"failed" }).pluck(:customer_id).uniq
+    Customer.where(id: customer_ids)
   end
 end

@@ -13,11 +13,7 @@ class Item < ActiveRecord::Base
     self.unit_price = unit_price / 100.00
   end
 
-  def best_day
-    
-
-    # customer_purchases_hsh = self.invoices.where(status: "shipped").group(:customer_id).count
-    # customer_id = customer_purchases_hsh.max_by {|k, v| v}[0]
-    # Customer.find(customer_id)
+  def self.random
+    order("RANDOM()").limit(1)
   end
 end

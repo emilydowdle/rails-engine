@@ -6,7 +6,7 @@ class Api::V1::ItemsController < ApplicationController
   end
 
   def show
-    respond_with Item.find(params[:id])
+    respond_with find_item
   end
 
   def find
@@ -18,22 +18,22 @@ class Api::V1::ItemsController < ApplicationController
   end
 
   def random
-    respond_with Item.offset(rand(Item.count)).first
+    respond_with Item.random
   end
 
   def invoice_items
-    respond_with Item.find(params[:id]).invoice_items
+    respond_with find_item.invoice_items
   end
 
   def merchant
-    respond_with Item.find(params[:id]).merchant
-  end
-
-  def best_day
-    respond_with Item.find(params[:id]).best_day
+    respond_with find_item.merchant
   end
 
   private
+
+    def find_item
+      Item.find(params[:id])
+    end
 
     def item_params
       params.permit(:id,

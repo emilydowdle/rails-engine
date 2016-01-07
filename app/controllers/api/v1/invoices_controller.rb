@@ -6,7 +6,7 @@ class Api::V1::InvoicesController < ApplicationController
   end
 
   def show
-    respond_with Invoice.find(params[:id])
+    respond_with find_invoice
   end
 
   def find
@@ -18,30 +18,34 @@ class Api::V1::InvoicesController < ApplicationController
   end
 
   def random
-    respond_with Invoice.offset(rand(Invoice.count)).first
+    respond_with Invoice.random
   end
 
   def transactions
-    respond_with Invoice.find(params[:id]).transactions
+    respond_with find_invoice.transactions
   end
 
   def invoice_items
-    respond_with Invoice.find(params[:id]).invoice_items
+    respond_with find_invoice.invoice_items
   end
 
   def items
-    respond_with Invoice.find(params[:id]).items
+    respond_with find_invoice.items
   end
 
   def customer
-    respond_with Invoice.find(params[:id]).customer
+    respond_with find_invoice.customer
   end
 
   def merchant
-    respond_with Invoice.find(params[:id]).merchant
+    respond_with find_invoice.merchant
   end
 
   private
+
+    def find_invoice
+      Invoice.find(params[:id])
+    end
 
     def invoice_params
       params.permit(:id,

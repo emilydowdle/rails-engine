@@ -87,6 +87,6 @@ class Api::V1::InvoicesControllerTest < ActionController::TestCase
     get :random, format: :json
 
     assert_response :success
-    assert_kind_of Hash, json_response
+    assert_kind_of Array, json_response
   end
 end

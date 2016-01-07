@@ -18,7 +18,7 @@ class Api::V1::MerchantsController < ApplicationController
   end
 
   def random
-    respond_with Merchant.offset(rand(Merchant.count)).first
+    respond_with Merchant.random
   end
 
   def invoices
@@ -29,22 +29,13 @@ class Api::V1::MerchantsController < ApplicationController
     respond_with find_merchant.items
   end
 
-  # def most_revenue
-  #   # for all merchants
-  #   # GET /api/v1/merchants/most_revenue?quantity=x returns the top x merchants ranked by total revenue
-  #   respond_with Merchant.most_revenue
-  # end
+  def most_revenue
+    respond_with Merchant.merchants_sorted_by_revenue(params).take(params[:quantity].to_i)
+  end
 
   def revenue_by_date
     respond_with Merchant.revenue_by_date(params)
-    # for all merchants
-    # GET /api/v1/merchants/revenue?date=x returns the total revenue for date x across all merchants
   end
-
-  # def revenue_all
-  #   # for all merchants
-  #   # GET /api/v1/merchants/most_items?quantity=x returns the top x merchants ranked by total number of items sold
-  # end
 
   def revenue
     respond_with find_merchant.single_merchant_revenue(params)
@@ -55,8 +46,7 @@ class Api::V1::MerchantsController < ApplicationController
   end
 
   def customers_with_pending_invoices
-    # for one merchant
-    # GET /api/v1/merchants/:id/customers_with_pending_invoices returns a collection of customers which have pending (unpaid) invoices
+    respond_with find_merchant.pending_invoices
   end
 
   private

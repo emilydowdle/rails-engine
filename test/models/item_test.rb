@@ -1,7 +1,10 @@
 require 'test_helper'
 
 class ItemTest < ActiveSupport::TestCase
-  # test "the truth" do
-  #   assert true
-  # end
+  test "random returns one record" do
+    item = Item.random
+
+    assert_equal 1, item.count
+    assert_equal Item, item.first.class
+  end
 end

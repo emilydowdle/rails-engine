@@ -87,6 +87,22 @@ class Api::V1::MerchantsControllerTest < ActionController::TestCase
     get :random, format: :json
 
     assert_response :success
-    assert_kind_of Hash, json_response
+    assert_kind_of Array, json_response
+  end
+
+  test "#invoices returns an empty collection of invoices" do
+    merchant_id = Merchant.first.id
+    get :invoices, id: merchant_id, format: :json
+
+    assert_response :success
+    assert ([]), json_response
+  end
+
+  test "#items returns an empty collection of items" do
+    merchant_id = Merchant.first.id
+    get :items, id: merchant_id, format: :json
+
+    assert_response :success
+    assert ([]), json_response
   end
 end

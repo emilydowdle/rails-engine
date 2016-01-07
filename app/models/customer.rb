@@ -9,4 +9,8 @@ class Customer < ActiveRecord::Base
     merchant_id = merchant_hsh.max_by {|k, v| v}[0]
     Merchant.find(merchant_id)
   end
+
+  def self.random
+    order("RANDOM()").limit(1)
+  end
 end

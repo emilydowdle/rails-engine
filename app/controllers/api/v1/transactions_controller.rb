@@ -6,7 +6,7 @@ class Api::V1::TransactionsController < ApplicationController
   end
 
   def show
-    respond_with Transaction.find(params[:id])
+    respond_with find_transaction
   end
 
   def find
@@ -18,15 +18,18 @@ class Api::V1::TransactionsController < ApplicationController
   end
 
   def random
-    respond_with Transaction.offset(rand(Transaction.count)).first
+    respond_with Transaction.random
   end
 
   def invoice
-    respond_with Transaction.find(params[:id]).invoice
+    respond_with find_transaction.invoice
   end
 
-
   private
+
+    def find_transaction
+      Transaction.find(params[:id])
+    end
 
     def transaction_params
       params.permit(:id,

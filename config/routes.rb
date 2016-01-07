@@ -45,7 +45,6 @@ Rails.application.routes.draw do
       get 'items/random', to: 'items#random', defaults: { format: :json }
       get 'items/:id/invoice_items', to: 'items#invoice_items', defaults: { format: :json }
       get 'items/:id/merchant', to: 'items#merchant', defaults: { format: :json }
-      get 'items/:id/best_day', to: 'items#best_day', defaults: { format: :json }
       resources :items, only: [:index, :show], defaults: { format: :json }
 
       get 'transactions/find', to: 'transactions#find', defaults: { format: :json }
