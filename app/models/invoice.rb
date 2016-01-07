@@ -1,6 +1,4 @@
 class Invoice < ActiveRecord::Base
-  # default_scope { order('invoices.id') }
-
   belongs_to :merchant
   belongs_to :customer
 

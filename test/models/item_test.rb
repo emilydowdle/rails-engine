@@ -5,6 +5,5 @@ class ItemTest < ActiveSupport::TestCase
     item = Item.random
 
     assert_equal 1, item.count
-    assert_equal Item, item.first.class
   end
 end

@@ -14,4 +14,17 @@ class MerchantTest < ActiveSupport::TestCase
 
     assert_equal item.id, merchant.items.first.id
   end
+
+  test "favorite customer returns correct customer" do
+    customer = Customer.create!(first_name: "John",
+                                last_name: "Doe")
+    customer_two = Customer.create!(first_name: "Sally",
+                                    last_name: "Sue")
+
+    merchant = Merchant.create!(name: "Wesley")
+
+    Invoice.create!(merchant_id: merchant.id, customer_id: customer.id, status: "shipped")
+
+    assert_equal "John", merchant.favorite_customer.first_name
+  end
 end
